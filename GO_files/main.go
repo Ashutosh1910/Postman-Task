@@ -62,8 +62,9 @@ func main() {
 		fmt.Print("Enter Day and Meal-")
 		var day,meal string
 		fmt.Scanf("%v %v",&day,&meal)
-		
+		day,meal=strings.ToUpper(day),strings.ToUpper(meal)
 		valid_input:=check_input(day,day_list)&&check_input(meal,meal_list)
+		
 		if !valid_input{log.Fatalln("INVALID INPUT")}
 		item_list,_:=View_Meal(day,meal,f)
 		for _,item:=range item_list{
@@ -72,6 +73,7 @@ func main() {
 		fmt.Print("Enter Day and Meal-")
 		var day,meal string
 		fmt.Scanf("%v %v",&day,&meal)
+		day,meal=strings.ToUpper(day),strings.ToUpper(meal)
 		valid_input:=check_input(day,day_list)&&check_input(meal,meal_list)
 		if !valid_input{log.Fatalln("INVALID INPUT")}
 		no_of_item:=No_of_items_in_meal(day,meal,f)
@@ -79,10 +81,14 @@ func main() {
  case 3:{
 		fmt.Println("Enter Day and Meal and Item-")
 		var day,meal,i1,i2 string
-		fmt.Scanf("%v %v %v %v",&day,&meal,&i1,&i2)
+		i2=""//default value to i2 and i3 in case not entered by user
+		i3:=""
+		fmt.Scanf("%v %v %v %v %v",&day,&meal,&i1,&i2,&i3)
+		day,meal,i1,i2,i3=strings.ToUpper(day),strings.ToUpper(meal),strings.ToUpper(i1),strings.ToUpper(i2),strings.ToUpper(i3)
 		valid_input:=check_input(day,day_list)&&check_input(meal,meal_list)
+		
 		if !valid_input{log.Fatalln("INVALID INPUT")}
-		exists:=check_item(day,meal,i1+i2,f)
+		exists:=check_item(day,meal,i1+i2+i3,f)
 		if exists {
 			fmt.Println("Item found in Meal")
 		} else{
@@ -134,6 +140,7 @@ func check_item(day string ,meal string,item_name string,f *excelize.File)(bool)
 func convert_to_json(f *excelize.File,get_data bool) ([]byte){
  filename:="mess-menu.json"
  json_file,err:=os.Create(filename)
+ 
  if err!=nil{
 	log.Fatalln(err)
     }
