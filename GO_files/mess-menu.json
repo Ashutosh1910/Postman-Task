@@ -26,9 +26,7 @@
             "DAL FRY",
             "BATI/ CHAPATI",
             "PLAIN  RICE",
-            "RASAM",
-            "",
-            ""
+            "RASAM"
         ]
     },
     "06-Feb-24": {
@@ -59,8 +57,7 @@
             "LEMON + ONION",
             "KHATTA MEETHA PUMPKIN",
             "CHOLE  MASALA",
-            "HOT CHOCO MILK",
-            ""
+            "HOT CHOCO MILK"
         ]
     },
     "07-Feb-24": {
@@ -87,12 +84,7 @@
             "ALOO CHANA CHAAT",
             "TAWA VEG (NO KARELA)",
             "DAL PALAK",
-            "CHAPATI",
-            "",
-            "",
-            "",
-            "",
-            ""
+            "CHAPATI"
         ]
     },
     "08-Feb-24": {
@@ -154,10 +146,7 @@
             "BLACK MASOOR DAL",
             "EGG FRIED RICE / VEG FRIED RICE",
             "CHAPATI",
-            "BALIUSHAHI",
-            "",
-            "",
-            ""
+            "BALIUSHAHI"
         ]
     },
     "10-Feb-24": {
@@ -184,12 +173,7 @@
         ],
         "dinner": [
             "GREEN SALAD",
-            "SARSOON KA SAAG",
-            "",
-            "",
-            "",
-            "",
-            ""
+            "SARSOON KA SAAG"
         ]
     },
     "11-Feb-24": {
@@ -220,8 +204,7 @@
             "PLAIN RICE",
             "CHAPATI",
             "RASAM",
-            "HOT \u0026 SOUR SOUP",
-            ""
+            "HOT \u0026 SOUR SOUP"
         ]
     }
 }
