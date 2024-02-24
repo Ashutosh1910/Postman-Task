@@ -1,0 +1,22 @@
+{{define "editpostform" }}
+<div class="container mt-5">
+    <h2>Edit your Post</h2>
+    <form method="POST" action="/post/editpost?id={{.post.ID}}" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="postTitle" class="form-label">Title</label>
+            <input type="text" class="form-control" id="postTitle" name="title" value={{.post.Title}}>
+        </div>
+        <div class="mb-3">
+            <label for="postContent" class="form-label">Content</label>
+            <input  type="text" class="form-control" id="postContent"  name="content" value={{.post.Description}}></input>
+        </div>
+        <div class="mb-3">
+            <label for="postImage" class="form-label">Add Image</label>
+            <input class="form-control" type="file" id="postImage" name="images" accept="image/" multiple >
+            <small class="text-muted">You can upload multiple images.</small>
+        </div>
+        <button type="submit" class="btn btn-primary">Post</button>
+    </form>
+</div>
+
+{{end}}

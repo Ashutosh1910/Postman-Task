@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snapsta</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  
+  <style>
+    /* Add your custom styles here */
+    .navbar-brand {
+      font-family: 'Grand Hotel', cursive;
+      font-size: 28px;
+      color: #405DE6;
+    }
+    .navbar-nav .nav-link {
+      font-size: 16px;
+      color: #FFFFFF; /* white color for text */
+      padding: 0.5rem 1rem;
+    }
+    .navbar-nav .nav-link:hover {
+      color: #C4C4C4; /* slightly lighter color on hover */
+    }
+    .navbar-nav .nav-item.active .nav-link {
+      color: #C4C4C4; /* slightly lighter color for active link */
+    }
+    .navbar-nav .nav-item .nav-link i {
+      margin-right: 5px;
+    }
+    .navbar {
+      border-bottom: 1px solid #ccc;
+    }
+    .rounded-circle-md {
+      width: 150px; /* Set the desired width and height for the circular image */
+      height: 150px;
+  }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark"> 
+    <a class="navbar-brand" href="/">Snapsta</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/createpost"><i class="fas fa-search"></i> Post</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/profile/followers"><i class="far fa-heart"></i>View followers</a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0" method="GET" action="/post" >
+        <input class="form-control mr-sm-2" type="search" placeholder="Search by title or tagname" aria-label="Search" name="search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          {{if .logged}}
+          <a class="nav-link" href="/profile"><i class="far fa-user-circle"></i> Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+          {{else}}
+          <li class="nav-item">
+            <a class="nav-link" href="/"><i class="fas fa-sign-in-alt"></i>Login</a>
+            {{end}}
+        </li>
+      </ul>
+    </div>
+  </nav>
+  
+ {{if .signup}}
+ {{ block "content" . }}{{ end }}
+{{if .enteruniqueusername}}
+<h3>Enter Unique Username</h3>{{end}}
+{{if .notvalidemail}}
+<h3>Email doesnt match your gmailID {{.email}}</h3>{{end}}
+<img src=""></img>
+{{else}}
+{{if .logged}}
+
+{{if .CreatePost}}
+{{ block "postform" . }}{{ end }}
+{{end}}
+{{range .allposts}}
+<div class="col-md-4 mb-4">
+  <div class="card">
+    <div class="card-header bg-alert text-white">
+     <a href="/profile/{{.BY.Username}}">{{.BY.Name}}</a> 
+     {{if .Islogged}}
+     {{else}}
+     {{if .Follows_user}}
+     <a href="/profile/follow?id={{.BY.ID}}"><button  class="btn btn-secondary">Unfollow</button></a>
+     {{else}}
+    <a href="/profile/follow?id={{.BY.ID}}"><button   class="btn btn-primary">Follow</button></a>
+     {{end}}
+     {{end}}
+    </div>
+     <div class="card-body">
+        {{range .Post.Images}}
+        <img src="/media/post_pics/{{.Url}}" class="img-fluid" alt="Responsive image">
+        {{else}} 
+        {{end}}
+          <h5 class="card-title">Caption:{{.Post.Title}}</h5>
+          <p class="card-text">{{.Post.Description}}</p>
+          <p class="card-text">{{.Post.No_of_Likes}} likes</p>
+
+         <a href="/post/comment/{{.Post.ID}}"><button class="btn btn-primary">Comment</button></a>
+         {{if .Liked}}
+         <a href="/post/like/{{.Post.ID}}"><button class="btn btn-danger">Unlike</buttton></a>
+          {{else}}
+          <a href="/post/like/{{.Post.ID}}"><button class="btn btn-danger">Like</buttton></a>
+          {{end}}
+          {{if .Islogged}}
+         <a href="/post/editpost?id={{.Post.ID}}"><button class="btn btn-primary">Edit post</button></a>
+    <br><br>
+    <a href="/post/deletepost?id={{.Post.ID}}"><button class="btn btn-danger">Delete post</button></a>{{end}}
+      </div>
+  </div>
+</div>{{end}}
+{{if .editpostform}}
+{{ block "editpostform" . }}{{ end }}
+{{end}}
+{{if .Commentform}}
+{{ block "commentform" . }}{{ end }}
+{{end}}
+{{if .ownprofile}}
+<div class="container mt-5">
+  <h1>Edit Profile</h1>
+  <img src="/media/profile_pics/{{ .user.ProfileImage }}" alt="Profile Picture" class="img-fluid rounded-circle rounded-circle-md">
+  <div class="mb-3">
+    <p><strong>Followers:</strong> {{ .user.No_of_Followers }}</p>
+    <p><strong>Following:</strong> {{ .user.No_of_Following }}</p>
+</div>
+<div class="mb-3">
+    <p><strong>Total Posts:</strong> {{ len .user.Posts }}</p>
+</div>
+  <form action="/profile" method="POST" enctype="multipart/form-data">
+      <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" class="form-control" id="username" name="username" value="{{ .user.Username }}" >
+      </div>
+      <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name" name="name" value="{{ .user.Name }}">
+      </div>
+      <div class="form-group">
+        <label for="name">Email</label>
+        <input type="email" class="form-control" id="email" name="email" value="{{ .user.EmailID }}">
+    </div>
+    <div class="form-group">
+      <label for="name">Bio</label>
+      <input type="text" class="form-control" id="bio" name="bio" value="{{ .user.Bio }}">
+  </div>
+      <div class="form-group">
+          <label for="profile-pic">Profile Picture</label>
+          <input type="file" class="form-control-file" id="profile-pic" name="profile-pic">
+          <small class="form-text text-muted">Upload a new profile picture.</small>
+      </div>
+      
+      <button type="submit" class="btn btn-primary">Update</button>
+  </form>
+</div>
+<div class="container mt-5">
+  <h1>Your Posts</h1>
+  {{ range .user.Posts }}
+ <a href="/post/editpost?id=?{{.ID}}"> <li>{{ .Title }}</li> <a>
+  {{ end }}
+ </div>
+ <a><button  class="btn btn-danger">Delete Account</button><a>
+
+
+{{end}}
+{{if .followdata}}
+{{ block "followdata" . }}{{ end }}
+{{end}}
+{{if .otherprofile}}
+{{ block "profileview" . }}{{ end }}
+{{end}}
+
+{{else}}
+{{ block "login" . }}{{ end }}
+{{end}}
+{{end}}
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
